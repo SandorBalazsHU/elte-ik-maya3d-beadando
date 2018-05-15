@@ -1,6 +1,6 @@
 //Maya ASCII 2018 scene
 //Name: redBarn.ma
-//Last modified: Tue, May 15, 2018 07:38:58 PM
+//Last modified: Tue, May 15, 2018 07:48:27 PM
 //Codeset: 1250
 requires maya "2018";
 currentUnit -l centimeter -a degree -t film;
@@ -13,13 +13,13 @@ fileInfo "license" "student";
 createNode transform -s -n "persp";
 	rename -uid "88BD5F30-457B-FC16-91A3-ECB75BC22874";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 39.94471837961823 19.323388143841864 6.3266218644775449 ;
+	setAttr ".t" -type "double3" 29.128206027390689 14.090864921162073 4.6134546093065865 ;
 	setAttr ".r" -type "double3" -25.538352729603826 81.000000000000185 -2.0331547019677683e-14 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "9D92AD4D-42AC-7AF3-5CA9-D3B75CFAA33F";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999993;
-	setAttr ".coi" 44.821869662036676;
+	setAttr ".coi" 32.684687913955131;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -58,14 +58,14 @@ createNode camera -s -n "frontShape" -p "front";
 createNode transform -s -n "side";
 	rename -uid "6EE0A03A-48DA-6B2A-43F7-F2B336807AC3";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 1000.1 0 0 ;
+	setAttr ".t" -type "double3" 1000.1 7.0842082942090361 0.89702637491607806 ;
 	setAttr ".r" -type "double3" 0 89.999999999999986 0 ;
 createNode camera -s -n "sideShape" -p "side";
 	rename -uid "1F08E439-41F2-CE6B-4278-11823517F45B";
 	setAttr -k off ".v" no;
 	setAttr ".rnd" no;
 	setAttr ".coi" 1000.1;
-	setAttr ".ow" 30;
+	setAttr ".ow" 21.735639084504996;
 	setAttr ".imn" -type "string" "side";
 	setAttr ".den" -type "string" "side_depth";
 	setAttr ".man" -type "string" "side_mask";
@@ -80,11 +80,14 @@ createNode mesh -n "pCubeShape1" -p "pCube1";
 	setAttr -k off ".v";
 	setAttr ".vir" yes;
 	setAttr ".vif" yes;
+	setAttr ".pv" -type "double2" 0.5 0.375 ;
 	setAttr ".uvst[0].uvsn" -type "string" "map1";
 	setAttr ".cuvs" -type "string" "map1";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
+	setAttr -s 2 ".pt[8:9]" -type "float3"  0 0.50986987 0 0 0.50986987 
+		0;
 createNode lightLinker -s -n "lightLinker1";
 	rename -uid "BAB918BF-45F0-BD67-ED42-E685D43EBC82";
 	setAttr -s 2 ".lnk";
@@ -151,6 +154,20 @@ createNode script -n "sceneConfigurationScriptNode";
 createNode polyCube -n "polyCube1";
 	rename -uid "BE0862D8-492C-6AA3-6FE2-C7854BD21CE5";
 	setAttr ".cuv" 4;
+createNode polySplitRing -n "polySplitRing1";
+	rename -uid "6B1B146F-4CD5-7ED9-C38F-DDBE79BB639B";
+	setAttr ".uopa" yes;
+	setAttr ".ics" -type "componentList" 2 "e[6:7]" "e[10:11]";
+	setAttr ".ix" -type "matrix" 22.036665853765292 0 0 0 0 5.9997447982774341 0 0 0 0 11.967638938878615 0
+		 0 2.9841269841269851 0 1;
+	setAttr ".wt" 0.50842547416687012;
+	setAttr ".dr" no;
+	setAttr ".re" 7;
+	setAttr ".sma" 29.999999999999996;
+	setAttr ".stp" 2;
+	setAttr ".div" 1;
+	setAttr ".p[0]"  0 0 1;
+	setAttr ".fq" yes;
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -180,13 +197,15 @@ select -ne :hardwareRenderGlobals;
 	setAttr ".btrs" 512;
 select -ne :ikSystem;
 	setAttr -s 4 ".sol";
-connectAttr "polyCube1.out" "pCubeShape1.i";
+connectAttr "polySplitRing1.out" "pCubeShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 connectAttr "layerManager.dli[0]" "defaultLayer.id";
 connectAttr "renderLayerManager.rlmi[0]" "defaultRenderLayer.rlid";
+connectAttr "polyCube1.out" "polySplitRing1.ip";
+connectAttr "pCubeShape1.wm" "polySplitRing1.mp";
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
 connectAttr "pCubeShape1.iog" ":initialShadingGroup.dsm" -na;
 // End of redBarn.ma
