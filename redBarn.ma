@@ -1,6 +1,6 @@
 //Maya ASCII 2018 scene
 //Name: redBarn.ma
-//Last modified: Tue, May 15, 2018 08:17:35 PM
+//Last modified: Tue, May 15, 2018 08:26:52 PM
 //Codeset: 1250
 requires maya "2018";
 currentUnit -l centimeter -a degree -t film;
@@ -13,13 +13,13 @@ fileInfo "license" "student";
 createNode transform -s -n "persp";
 	rename -uid "88BD5F30-457B-FC16-91A3-ECB75BC22874";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 39.226337376800437 12.942031836127306 -2.2936729570234622 ;
-	setAttr ".r" -type "double3" -14.13835272959078 94.199999999986602 0 ;
+	setAttr ".t" -type "double3" 41.727288461242658 3.0893272239361274 8.4464765481470501 ;
+	setAttr ".r" -type "double3" 8.6616472703919829 79.399999999999963 4.3225486940833202e-15 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "9D92AD4D-42AC-7AF3-5CA9-D3B75CFAA33F";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999993;
-	setAttr ".coi" 42.134840454747966;
+	setAttr ".coi" 46.640173605445227;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -86,11 +86,6 @@ createNode mesh -n "pCubeShape1" -p "pCube1";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 18 ".pt[212:229]" -type "float3"  0 0.045092575 0 0 0.045092575 
-		0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 
-		0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 
-		0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 
-		0;
 createNode lightLinker -s -n "lightLinker1";
 	rename -uid "BAB918BF-45F0-BD67-ED42-E685D43EBC82";
 	setAttr -s 2 ".lnk";
@@ -556,6 +551,23 @@ createNode polyExtrudeFace -n "polyExtrudeFace6";
 	setAttr ".c[0]"  0 1 1;
 	setAttr ".cbn" -type "double3" -7.9892852880872942 12.053627416610276 -1.4539318007561137 ;
 	setAttr ".cbx" -type "double3" 7.9892833178558336 12.796922464207043 1.4484609403438899 ;
+createNode polyTweak -n "polyTweak6";
+	rename -uid "0C61E6C4-4D62-5117-DE93-9FBF02571683";
+	setAttr ".uopa" yes;
+	setAttr -s 18 ".tk[212:229]" -type "float3"  0 0.045092575 0 0 0.045092575
+		 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0
+		 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0
+		 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575 0 0 0.045092575
+		 0;
+createNode deleteComponent -n "deleteComponent8";
+	rename -uid "0E92EDF8-48DA-48F7-9010-B4B335768728";
+	setAttr ".dc" -type "componentList" 17 "vtx[13:15]" "vtx[18:19]" "vtx[21:23]" "vtx[26:27]" "vtx[55]" "vtx[60]" "vtx[64]" "vtx[67]" "vtx[84]" "vtx[87]" "vtx[93:98]" "vtx[101]" "vtx[113]" "vtx[135]" "vtx[139]" "vtx[157:162]" "vtx[165]";
+createNode deleteComponent -n "deleteComponent9";
+	rename -uid "C7ED3250-4678-772E-CFF9-EFAAE9510191";
+	setAttr ".dc" -type "componentList" 6 "vtx[12]" "vtx[15]" "vtx[55]" "vtx[86]" "vtx[91]" "vtx[140]";
+createNode deleteComponent -n "deleteComponent10";
+	rename -uid "E1E094A6-4F84-D9B2-D10C-1D8F58DDE717";
+	setAttr ".dc" -type "componentList" 9 "vtx[64]" "vtx[67]" "vtx[69:72]" "vtx[100]" "vtx[106]" "vtx[111]" "vtx[115]" "vtx[119]" "vtx[123]";
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -585,7 +597,7 @@ select -ne :hardwareRenderGlobals;
 	setAttr ".btrs" 512;
 select -ne :ikSystem;
 	setAttr -s 4 ".sol";
-connectAttr "polyExtrudeFace6.out" "pCubeShape1.i";
+connectAttr "deleteComponent10.og" "pCubeShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
@@ -632,6 +644,10 @@ connectAttr "pCubeShape1.wm" "polyExtrudeFace5.mp";
 connectAttr "polyExtrudeFace4.out" "polyTweak5.ip";
 connectAttr "polyExtrudeFace5.out" "polyExtrudeFace6.ip";
 connectAttr "pCubeShape1.wm" "polyExtrudeFace6.mp";
+connectAttr "polyExtrudeFace6.out" "polyTweak6.ip";
+connectAttr "polyTweak6.out" "deleteComponent8.ig";
+connectAttr "deleteComponent8.og" "deleteComponent9.ig";
+connectAttr "deleteComponent9.og" "deleteComponent10.ig";
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
 connectAttr "pCubeShape1.iog" ":initialShadingGroup.dsm" -na;
 // End of redBarn.ma
